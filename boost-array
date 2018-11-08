@@ -1,0 +1,13 @@
+However, I believe that using vector of vectors is confusing. If you want an array, consider using uBLAS http://www.boost.org/doc/libs/1_41_0/libs/numeric/ublas/doc/index.htm
+
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+
+int main () {
+    using namespace boost::numeric::ublas;
+    matrix<double> m (3, 3);
+    for (unsigned i = 0; i < m.size1 (); ++ i)
+        for (unsigned j = 0; j < m.size2 (); ++ j)
+            m (i, j) = 3 * i + j;
+    std::cout << m << std::endl;
+}

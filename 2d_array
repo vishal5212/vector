@@ -29,7 +29,12 @@ although we are declaring first dimenstion as a vector we cannot dynamically exp
 as vector<vector<int>> a[10] so there are 10 elements of type vector<int>*/
 
 
-/*now this one works fine. seems like 10 elements of type vector<int>*/
+/*now this one works fine. seems like 10 elements of type vector<int> so it is a 2-d array with first dimension
+fixed to 10 and second dimension is dynamic
+
+can we make both the dimensions dynamic?
+
+yes we can!*/
 
 
 #include<iostream>
@@ -49,3 +54,87 @@ int main(){
     
 return 0;
 }
+
+
+
+/*this is how we can make a dynamic 2d array with both dimensions dynamic
+src:-https://stackoverflow.com/questions/1833127/two-dimensional-array-using-vector*/
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(){
+    vector<vector<int>> a;
+   a.push_back(vector<int>());
+   a.push_back(vector<int>());
+    
+    a[1].push_back(3);
+    a[1].push_back(4);
+    a[1].push_back(5);
+    
+    
+    
+    cout<<a[1][1];
+    
+return 0;
+}
+
+
+/*need not be int. it is a container so it could be string or some user defined type like point in the 
+following example*/
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class point
+{   
+    public:
+        point():x(0),y(0){}
+        ~point(){}
+        point(float xx,float yy):x(xx),y(yy){}
+        float x,y;
+};
+
+int main()
+{
+    vector<vector<point> > a; // 2D array
+    point p(2,3);
+    a.push_back(vector<point>());
+    a[0].push_back(p);
+    return 0;
+    
+}
+
+/*  vector<vector<point> > a(10, vector<point>(10));
+
+It's a vector containing 10 vectors containing 10 point. Then you can use  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

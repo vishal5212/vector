@@ -115,9 +115,11 @@ return 0;}
 
 /*reference_operator[g],at(g),front(),back(),data()*/
 
-/* reference_operator[g]
+/* --------------------------------------------------reference_operator[g]-----------------------------------------
 --- = assigns elements of one container to another container
 --- [] gives element at position at the specified location, same thing as at(g) except for the fact that at(g) will throw out of range exception while [] will show undefined behaviour
+
+a.data()-- returns a direct pointer to the memory array used internally that has been used for storing the vector
 */
 
 #include<iostream>
@@ -139,26 +141,276 @@ int main(){
       cout<<b[i]<<' ';}
       cout<<endl;
  
-  
+  /*at(g) ,.front(),.back() behves the exspected way*/
+  /*front(),back() different from begin(),end() in the way that former pair return the value in the vector while latter returns the 
+  iterator pointing to the begin or end*/
   
 return 0;}
 
+/*----------------------------------------------assign(),--------------------------------------
+-------------------------------------------------insert(),-------------------------------------------
+/*The vector is extended by inserting new elements before the element at the specified position, effectively increasing the container 
+size by the number of elements inserted.
+
+This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector
+capacity.
+
+Because vectors use an array as their underlying storage, inserting elements in positions other than the vector end causes the
+container to relocate all the elements that were after position to their new positions. This is generally an inefficient operation 
+compared to the one performed for the same operation by other kinds of sequence containers (such as list or forward_list).
+
+Return value
+An iterator that points to the first of the newly inserted elements.
+
+Member type iterator is a random access iterator type that points to elements.
+
+If reallocations happen, the storage is allocated using the container's allocator, which may throw exceptions on failure (for the default allocator, bad_alloc is thrown if the allocation request does not succeed).
 
 
+single element (1)	
+iterator insert (iterator position, const value_type& val);
+fill (2)	
+    void insert (iterator position, size_type n, const value_type& val);
+range (3)	
+template <class InputIterator>
+    void insert (iterator position, InputIterator first, InputIterator last);
+
+*/
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(){
+vector<int> a={1,2,3,4,5,6,2,54,42,5,825,5,25};
+int b[]={11,12,13,14,1,5};
+vector<int>::iterator it;
+it=a.begin()+3;
+it=a.insert(it,400);/*insertion at a position using an iterator*/
+for(auto itr=a.begin();itr!=a.end();itr++){
+      cout<<*itr<<' ';}
+      cout<<endl;
+
+cout<<*it<<endl;
 
 
+/*     it KEEPS ON POINTING TO THE SAME ELEMENT AS BEFORE AFTER THE INSERTION   */
 
 
+/*inserting elements wihin a range*/
+a.insert(it,2,300);
+
+for(auto itr=a.begin();itr!=a.end();itr++){
+      cout<<*itr<<' ';}
+      cout<<endl;
 
 
+/*FOR ITERATOR REUSE ASSIGN THE ITERATOR RESULTING FROM THE FIRST INSERT OPERATION BACK TO THE ITERATOR
+LIKE(line 186)                        it=a.insert(it,2,250);      */
 
 
+/*inserting another vector in a given vector or merging two vectors together except we get the freedom to choose the position we 
+want to insert our vector*/
+
+it=a.insert(it,a.begin()+2,a.begin()+a.size()-1);
 
 
+                               /*SOLVE THIS MYSTERY OF ASSIGNING THE ITERATOR BACK TO ITSELF TO USE IT
+                               WHILE SOMETIMES THAT IS NOT REQUIRED(LINE 213)*/
+
+/*inserting using array*/
+a.insert( it,b,b+(sizeof(b)/sizeof(b[0])));
+
+for(auto itr=a.begin();itr!=a.end();itr++){
+      cout<<*itr<<' ';}
+      cout<<endl;
 
 
+return 0;}
 
+-----------------------------------------------push_back(element),----------------------------------
+pushes element at the bak and increases the size by 1
+
+------------------------------------------------pop_back(),---------------------------------------
+pops element form the back and decreases the size by 1
+
+-------------------------------------------erase(),-------------------------------
+USES ITERATORS
+vector::erase()
+erase() function is used to remove elements from a container from the specified position or range.
+
+Syntax :
+
+1. vectorname.erase(position)
+2. vectorname.erase(startingposition, endingposition)
+Parameters :
+Position of the element to be removed in the form of iterator.
+or the range specified using start and end iterator.
+Result :
+Elements are removed from the specified
+position of the container.
+
+
+--------------------------------------emplace(),---------------------------------------
+
+--------------------------------------emplace_back(),------------------------------------------------
+
+swap(),
+
+----------------clear()------------------
+clears the entire vector a.clear() will delete all the elements present in a
+
+
+---------------------------------------------------assign()-------------------------------------
+--vector:: assign() is an STL in C++ which assigns new values to the vector elements by replacing old ones. It can also modify the
+size of the vector if necessary.
+
+Syntax for assigning constant values:
+
+vectorname.assign(int size, int value)
+
+Parameters: 
+size - number of values to be assigned
+value - value to be assigned to the vectorname
+
+
+vectorname.assign(ITERATOR, arr + size)
+
+Parameters: 
+arr - the array which is to be assigned to a vector
+size - number of elements from the beginning which has to be assigned.
+
+--------swap()------------
+vector::swap()
+This function is used to swap the contents of one vector with another vector of same type and size.
+
+Syntax :
+
+vectorname1.swap(vectorname2)
+Parameters :
+The name of the vector with which
+the contents have to be swapped.
+Result :
+All the elements of the 2 vectors are swapped.
+Examples:
+
+Input  : myvector1 = {1, 2, 3, 4}
+         myvector2 = {3, 5, 7, 9}
+         myvector1.swap(myvector2);
+Output : myvector1 = {3, 5, 7, 9}
+         myvector2 = {1, 2, 3, 4}
 
 
 
 */
+/*
+------------------------------------------------BEHAVIOUR OF assign()-------------------------------------  
+ASSIGNS THE  NEW ELEMENTS AND REMOVES THE PREVIOUS ONES      CAPACITY OF THE VECTOR SATYS THE SAME BUT THE SIZE CHANGES                                    
+
+
+
+*/
+
+#include<iostream>
+#include<vector>
+
+using namespace std;
+int main(){
+  vector<int> a={1,2,1,3,4,5,6,25,3,6};
+  int b[]={1,2,1,3,4,5,6,25,3,6};
+  vector<int> v1,v2;          
+ // a.assign(3,100);
+  for(int i=0;i<a.size();i++){
+        cout<<a[i]<<' ';}
+        cout<<endl;
+        
+ /*is there a difference between assgning using an iterator to the beginning and assigning using array name as the beginning address*/
+ 
+ vector<int>::iterator it;
+ it=a.begin();
+ v1.assign(it,it+2);/* last location is not accessed or assigned i.e. prints only the forst two elements and not three*/
+  for(int i=0;i<v1.size();i++){
+        cout<<v1[i]<<' ';}
+        cout<<endl;
+  v2.assign(b,b+2);
+  
+                                                         /*IMPORTANT OBSERVATION*/
+/*IF a IS A VECTOR THEN ITS NAME a CAN'T BE PASSED SA AN ARGUMENT FOR THE assign() OPERATION BUT IF IT IS AN ARRAY LIKE b IT CAN BE DONE
+BECAUSE THE VECTOR NAME IS NOT AN IMPLICIT POINTER TO THE BEGINNING OF THE VECTOR USE v.begin() AS THE ITERATOR WHILE THE ARRAY NAME 
+WORKS AS AN IMPLICIT POINTER
+*/  
+   for(int i=0;i<v2.size();i++){
+        cout<<v2[i]<<' ';}
+        cout<<endl;
+   
+   
+   
+   
+ /*can be used to assign elements to the same array*/  
+ 
+ a.assign(a.begin(),a.begin()+2);
+ cout<<a.size()<<endl;
+ cout<<a.capacity()<<endl;
+ 
+return 0;}
+/*
+-------------------------------------RELATIONAL OPERATORS FOR VECTOR-----------------------------------------------
+==, !=,<,>,<=,>=
+TAKES TWO VECTORS ON EITHER SIDE OF THE OPERATOR
+RETURNS EITHER TRUE OF FALSE
+
+
+Relational operators for vector
+Performs the appropriate comparison operation between the vector containers lhs and rhs.
+
+The equality comparison (operator==) is performed by first comparing sizes, and if they match, the elements are compared sequentially 
+using operator==, stopping at the first mismatch (as if using algorithm equal).
+
+The less-than comparison (operator<) behaves as if using algorithm lexicographical_compare, which compares the elements sequentially 
+using operator< in a reciprocal manner (i.e., checking both a<b and b<a) and stopping at the first occurrence.
+
+*/
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
